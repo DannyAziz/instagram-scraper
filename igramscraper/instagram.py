@@ -296,11 +296,12 @@ class Instagram:
         url = endpoints.get_media_page_link(media_code)
         return self.get_media_by_url(url)
 
-    def get_medias_by_user_id(self, id, count=12, max_id=''):
+    def get_medias_by_user_id(self, id, count=12, max_id='', end_short_code=''):
         """
         :param id: instagram account id
         :param count: the number of how many media you want to get
         :param max_id: used to paginate
+        :param max_id: used to end the loop if a media with the same short_code is found
         :return: list of Media
         """
         index = 0
@@ -342,6 +343,8 @@ class Instagram:
 
                 media = Media(mediaArray['node'])
                 medias.append(media)
+                if end_short_code and media.short_code == end_short_code:
+                    return medias
                 index += 1
 
             if not nodes or nodes == '':
